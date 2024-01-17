@@ -9,36 +9,9 @@ class Almacen(models.Model):
     email = models.EmailField()
     ubicacion = models.CharField(max_length = 50)
 
-    def notificaLlegada():
-        pass
-
 
 class Inventario(models.Model):
     cantidad = models.IntegerField()
-
-    def devuelveExistenciaProducto():
-        pass
-
-    def registraProducto():
-        pass
-
-    def actualizaStock():
-        pass
-
-    def devuelveDetallesProducto():
-        pass
-
-    def devuelveDetallesNovedades():
-        pass
-
-    def registrarMotivoRetiro():
-        pass
-
-    def devuelveDetallesProductoEmpacado():
-        pass
-
-    def devuelveDetallesLlegada():
-        pass
 
     
 class Personal(models.Model):
@@ -51,7 +24,7 @@ class Personal(models.Model):
     class Meta:
         abstract = True
 
-class Gestor(Personal):
+class Gestor(models.Model):
     id_gestor = models.CharField(max_length = 30)
 
     def verificarDetalleProducto():
@@ -61,7 +34,7 @@ class Gestor(Personal):
         pass
 
 
-class Jefe(Personal):
+class Jefe(models.Model):
     id_jefe = models.CharField(max_length = 30)
 
     def empacaProducto():
@@ -76,7 +49,7 @@ class Jefe(Personal):
     def asignarUbicacion():
         pass
 
-class Operador(Personal):
+class Operador(models.Model):
     id_operador = models.CharField(max_length = 30)
 
     def seleccionaProductoEmpacar():
