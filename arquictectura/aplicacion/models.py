@@ -3,17 +3,16 @@ from django.db import models
 # Create your models here.
 
 
-class Almacen(models.Model):
-    nombre = models.CharField(max_length = 50)
-    telefono = models.IntegerField()
-    email = models.EmailField()
-    ubicacion = models.CharField(max_length = 50)
-
-
 class Inventario(models.Model):
     cantidad = models.IntegerField()
 
-    
+class Almacen(models.Model):
+    nombre = models.CharField(max_length=50)
+    telefono = models.IntegerField()
+    email = models.EmailField()
+    ubicacion = models.CharField(max_length=50)
+    inventario = models.OneToOneField(Inventario, on_delete=models.CASCADE, related_name='almacen')
+
 class Personal(models.Model):
     nombre = models.CharField(max_length = 50)
     telefono = models.IntegerField()
@@ -24,19 +23,19 @@ class Personal(models.Model):
 
 class Gestor(models.Model):
     id_gestor = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_gestor')
 
 
 
 class Jefe(models.Model):
     id_jefe = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_jefe')
 
 
 
 class Operador(models.Model):
     id_operador = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_operador')
 
 
 
@@ -46,25 +45,23 @@ class Orden(models.Model):
 
 class Producto(models.Model):
     cantidad = models.IntegerField()
-    categoria = models.CharField(max_length = 30)
-    nombre = models.CharField(max_length = 30)
-    estado = models.CharField(max_length = 30)
+    categoria = models.CharField(max_length=30)
+    nombre = models.CharField(max_length=30)
+    estado = models.CharField(max_length=30)
     fechaCaducidad = models.DateField()
     fechaEntrada = models.DateField()
-    novedad = models.CharField(max_length = 50)
-    inventario = models.ForeignKey(Inventario, on_delete = models.CASCADE, related_name = 'Inventarios')
-    almacen = models.ManyToManyField(Almacen)
-    
+    novedad = models.CharField(max_length=50)
+    inventario = models.OneToOneField(Inventario, on_delete=models.CASCADE, related_name='producto')
+    # Elimina la relación 'almacen'
 
 class Medicamento(models.Model):
     id_medicamento = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')
-    
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='medicamentos')
 
 class InsumoMedico(models.Model):
     id_insu_medi = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='insumos_medicos')
 
 class DipositivoMedico(models.Model):
     id_disp_medi = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='dispositivos_medicos')
