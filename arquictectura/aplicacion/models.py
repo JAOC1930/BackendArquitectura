@@ -19,47 +19,26 @@ class Personal(models.Model):
     telefono = models.IntegerField()
     email = models.EmailField()  
     edad = models.IntegerField()
-    almacen = almacen = models.ForeignKey(Almacen, on_delete=models.CASCADE, related_name='Almacenes')
+    almacen = models.ForeignKey(Almacen, on_delete=models.CASCADE, related_name='Almacenes')
     inventario = models.ForeignKey(Inventario, on_delete = models.CASCADE, related_name = 'Inventarios')
-    class Meta:
-        abstract = True
 
 class Gestor(models.Model):
     id_gestor = models.CharField(max_length = 30)
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
 
-    def verificarDetalleProducto():
-        pass
-
-    def retirarProductoMalE():
-        pass
 
 
 class Jefe(models.Model):
     id_jefe = models.CharField(max_length = 30)
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
 
-    def empacaProducto():
-        pass
 
-    def seleccionarProducto():
-        pass
-
-    def despacharProcuto():
-        pass
-
-    def asignarUbicacion():
-        pass
 
 class Operador(models.Model):
     id_operador = models.CharField(max_length = 30)
+    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales')
 
-    def seleccionaProductoEmpacar():
-        pass
 
-    def transportarProducto():
-        pass
-
-    def registrarLlegadaProdcuto():
-        pass
 
 class Orden(models.Model):
     ordenEnvio = models.CharField(max_length = 60)
@@ -76,14 +55,16 @@ class Producto(models.Model):
     inventario = models.ForeignKey(Inventario, on_delete = models.CASCADE, related_name = 'Inventarios')
     almacen = models.ManyToManyField(Almacen)
     
-    class Meta:
-        abstract = True  # Hace que esta clase sea abstracta, no se crea en la base de datos
 
-class Medicamento(Producto):
+class Medicamento(models.Model):
     id_medicamento = models.IntegerField()
+    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')
+    
 
-class InsumoMedico(Producto):
+class InsumoMedico(models.Model):
     id_insu_medi = models.IntegerField()
+    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')
 
-class DipositivoMedico(Producto):
+class DipositivoMedico(models.Model):
     id_disp_medi = models.IntegerField()
+    producto = models.ForeignKey(Producto, on_delete = models.CASCADE, related_name = 'Productos')

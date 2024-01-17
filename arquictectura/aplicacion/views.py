@@ -35,3 +35,37 @@ def devuelveDetallesLlegada(request):
 def notificaLlegada():
     pass
 
+
+# Operador
+def seleccionaProductoEmpacar():
+        pass
+
+def transportarProducto():
+    pass
+
+def registrarLlegadaProdcuto():
+    pass
+
+
+# Jefe
+
+def empacaProducto():
+        pass
+
+def seleccionarProducto():
+    pass
+
+def despacharProcuto():
+    pass
+
+def asignarUbicacion():
+    pass
+
+
+# Gestor
+
+def verificarDetalleProducto():
+        pass
+
+def retirarProductoMalE():
+    pass
