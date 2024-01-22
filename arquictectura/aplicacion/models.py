@@ -2,66 +2,53 @@ from django.db import models
 
 # Create your models here.
 
-
 class Inventario(models.Model):
-    cantidad = models.IntegerField()
+    nombre = models.CharField(max_length = 30)
+    Ciudad = models.CharField(max_length = 30)
+    def __str__(self):
+        return f'{self.nombre} - Ciudad: {self.Ciudad}'
 
 class Almacen(models.Model):
     nombre = models.CharField(max_length=50)
     telefono = models.IntegerField()
     email = models.EmailField()
     ubicacion = models.CharField(max_length=50)
-    inventario = models.OneToOneField(Inventario, on_delete=models.CASCADE, related_name='almacen')
+    inventario = models.OneToOneField(Inventario, on_delete=models.CASCADE, related_name='almacen_inventario')
+    def __str__(self):
+        return f'{self.nombre} - Ubicación: {self.ubicacion}'
+
+class RolPersona(models.Model):
+    rol = models.CharField(max_length = 30)
+    def __str__(self):
+        return f'{self.rol}'
 
 class Personal(models.Model):
     nombre = models.CharField(max_length = 50)
     telefono = models.IntegerField()
     email = models.EmailField()  
     edad = models.IntegerField()
-    almacen = models.ForeignKey(Almacen, on_delete=models.CASCADE, related_name='Almacenes')
-    inventario = models.ForeignKey(Inventario, on_delete = models.CASCADE, related_name = 'Inventarios')
+    rol = models.ForeignKey(RolPersona, on_delete = models.CASCADE, related_name = 'personal_rol')
+    inventario = models.ForeignKey(Inventario, on_delete = models.CASCADE, related_name = 'personal_inventario')
+    def __str__(self):
+        return f'{self.nombre} - Edad: {self.edad} - Rol: {self.rol}'
 
-class Gestor(models.Model):
-    id_gestor = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_gestor')
-
-
-
-class Jefe(models.Model):
-    id_jefe = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_jefe')
-
-
-
-class Operador(models.Model):
-    id_operador = models.CharField(max_length = 30)
-    personal = models.ForeignKey(Personal, on_delete = models.CASCADE, related_name = 'Personales_operador')
-
-
-
-class Orden(models.Model):
-    ordenEnvio = models.CharField(max_length = 60)
-    fechaGeneracion = models.DateTimeField()
+class CategoriaProducto(models.Model):
+    nombre = models.CharField(max_length = 30)
+    def __str__(self):
+        return f'{self.nombre}'
 
 class Producto(models.Model):
+    inventario = models.ForeignKey(Inventario, on_delete=models.CASCADE, related_name='producto_inventario')
+    categoria = models.ForeignKey(CategoriaProducto, on_delete = models.CASCADE, related_name = 'producto_categoria')
+    nombre = models.CharField(max_length = 30)
     cantidad = models.IntegerField()
-    categoria = models.CharField(max_length=30)
-    nombre = models.CharField(max_length=30)
     estado = models.CharField(max_length=30)
-    fechaCaducidad = models.DateField()
+    novedad = models.CharField(max_length=50, null=True, blank=True)
     fechaEntrada = models.DateField()
-    novedad = models.CharField(max_length=50)
-    inventario = models.OneToOneField(Inventario, on_delete=models.CASCADE, related_name='producto')
-    # Elimina la relación 'almacen'
-
-class Medicamento(models.Model):
-    id_medicamento = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='medicamentos')
-
-class InsumoMedico(models.Model):
-    id_insu_medi = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='insumos_medicos')
-
-class DipositivoMedico(models.Model):
-    id_disp_medi = models.IntegerField()
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='dispositivos_medicos')
+    fechaCaducidad = models.DateField(null=True, blank=True)
+    via_administrativa = models.CharField(max_length=30, null=True, blank=True)
+    material = models.CharField(max_length=30, null=True, blank=True)
+    instrucciones_almacenamiento = models.CharField(max_length=100, null=True, blank=True)
+    instrucciones_uso = models.CharField(max_length=100, null=True, blank=True)
+    def __str__(self):
+        return f'{self.nombre} - Cantidad: {self.cantidad} - Estado: {self.estado}'
