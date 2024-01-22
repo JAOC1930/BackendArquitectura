@@ -5,5 +5,5 @@ set -o errexit
 
 pip install -r arquictectura/requirements.txt
 
-python manage.py collectstatic --noinput
-python manage.py migrate
+python arquictectura/manage.py collectstatic --noinput
+python arquictectura/manage.py migrate
