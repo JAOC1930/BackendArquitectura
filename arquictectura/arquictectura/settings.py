@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'arquictectura.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url(
+    'default': dj_database_url.config(
         default='postgres://postgres:postgres@localhost:5432/arquitectura',
         conn_max_age=600,
 
