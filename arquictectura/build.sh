@@ -1,9 +1,19 @@
 #!/usr/bin/env bash
 # exit on error
-
 set -o errexit
 
-pip install -r arquictectura/requirements.txt
+# Cambiar al directorio 'arquictectura'
+cd arquictectura
 
-python arquictectura/manage.py collectstatic --noinput
-python arquictectura/manage.py migrate
+# Instalar dependencias con pip
+pip install -r requirements.txt
+
+# Recopilar archivos estáticos
+python manage.py collectstatic --noinput
+
+# Migrar la base de datos
+python manage.py migrate
+
+# Volver al directorio original (opcional)
+
+# Resto del script...
